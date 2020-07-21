@@ -1,8 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/background_color"
-    android:padding="20dp" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/splash_background"
+    android:padding="20dp">
 
     <LinearLayout
         android:id="@+id/login_layout"
@@ -21,43 +22,50 @@
             android:textSize="25sp"
             android:textStyle="bold" />
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/login_emailid"
             android:singleLine="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/email"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:hint="Email Id"
+            app:met_floatingLabel="normal"
             android:inputType="textEmailAddress"
             android:padding="10dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="16sp" />
+            android:textColor="@color/white_greyish"
+            android:textColorHint="@color/white_greyish"
+            app:met_underlineColor="@color/white_greyish"
+            app:met_hideUnderline="true"
+            android:textSize="16sp"/>
 
+       <!--
         <View
             android:layout_width="fill_parent"
             android:layout_height="1px"
             android:background="@color/white_greyish" />
 
-        <EditText
+            -->
+
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/login_password"
             android:singleLine="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/password"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:hint="Password"
+            app:met_floatingLabel="normal"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="16sp" />
+            android:textColor="@color/white_greyish"
+            android:textColorHint="@color/white_greyish"
+            app:met_underlineColor="@color/white_greyish"
+            app:met_hideUnderline="true"
+            android:textSize="16sp"/>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -95,9 +103,9 @@
             android:background="@drawable/loginbutton_selector"
             android:padding="3dp"
             android:text="LOGIN"
-            android:textColor="#009688"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <TextView
@@ -109,8 +117,11 @@
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:padding="5dp"
-        android:text="Not a Member yet? Sign Up here.@string/newUser"
+        android:text="@string/newUser"
         android:textColor="@color/white"
         android:textSize="15sp" />
 
 </RelativeLayout>
+
+    <!-- android:drawableLeft="@drawable/email"
+     android:drawableLeft="@drawable/password"-->

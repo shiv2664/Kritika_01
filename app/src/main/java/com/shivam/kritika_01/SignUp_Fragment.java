@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -90,7 +91,8 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
             case R.id.already_user:
 
                 // Replace login fragment
-                new MainActivity().replaceLoginFragment();
+               // new MainActivity().replaceLoginFragment();
+                ((RegisterActivity) Objects.requireNonNull(getActivity())).replaceLoginFragment();
                 break;
         }
 
@@ -118,25 +120,38 @@ public class SignUp_Fragment extends Fragment implements View.OnClickListener {
                 || getLocation.equals("") || getLocation.length() == 0
                 || getPassword.equals("") || getPassword.length() == 0
                 || getConfirmPassword.equals("")
-                || getConfirmPassword.length() == 0)
+                || getConfirmPassword.length() == 0){
 
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "All fields are required.");
+            Toast.makeText(getActivity(), "All fields are required", Toast.LENGTH_SHORT).show();
+        }
+
+            //new CustomToast().Show_Toast(getActivity(), view,
+            //        "All fields are required.");
 
             // Check if email id valid or not
         else if (!m.find())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Your Email Id is Invalid.");
+            emailId.setError("Your Email Id is Invalid");
+
+            // new CustomToast().Show_Toast(getActivity(), view,
+           //         "Your Email Id is Invalid.");
 
             // Check if both password should be equal
-        else if (!getConfirmPassword.equals(getPassword))
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Both password doesn't match.");
+        else if (!getConfirmPassword.equals(getPassword)){
+            password.setError("Both password doesn't match.");
+            password.setError("Both password doesn't match.");
+        }
+
+            //new CustomToast().Show_Toast(getActivity(), view,
+            //        "Both password doesn't match.");
 
             // Make sure user should check Terms and Conditions checkbox
-        else if (!terms_conditions.isChecked())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Please select Terms and Conditions.");
+        else if (!terms_conditions.isChecked()){
+
+            Toast.makeText(getActivity(), "Please select Terms and Conditions.", Toast.LENGTH_SHORT).show();
+        }
+
+            //new CustomToast().Show_Toast(getActivity(), view,
+            //        "Please select Terms and Conditions.");
 
             // Else do signup or do your stuff
         else

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+
 public class CustomToast {
 
     public void Show_Toast(Context context, View view, String error) {
@@ -38,3 +40,5 @@ public class CustomToast {
         toast.show();// Finally show toast
     }
 }
+
+ */

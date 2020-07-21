@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rengwuxian.materialedittext.MaterialEditText;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +33,7 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 
     private View view;
 
-    private EditText emailid, password;
+    private MaterialEditText emailid, password;
     private Button loginButton;
     private TextView forgotPassword, signUp;
     private CheckBox show_hide_password;
@@ -104,14 +106,13 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 
         fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
 
-        emailid = (EditText) view.findViewById(R.id.login_emailid);
-        password = (EditText) view.findViewById(R.id.login_password);
-        loginButton = (Button) view.findViewById(R.id.loginBtn);
-        forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
-        signUp = (TextView) view.findViewById(R.id.createAccount);
-        show_hide_password = (CheckBox) view
-                .findViewById(R.id.show_hide_password);
-        loginLayout = (LinearLayout) view.findViewById(R.id.login_layout);
+        emailid = view.findViewById(R.id.login_emailid);
+        password = view.findViewById(R.id.login_password);
+        loginButton = view.findViewById(R.id.loginBtn);
+        forgotPassword = view.findViewById(R.id.forgot_password);
+        signUp = view.findViewById(R.id.createAccount);
+        show_hide_password = view.findViewById(R.id.show_hide_password);
+        loginLayout = view.findViewById(R.id.login_layout);
 
         // Load ShakeAnimation
         shakeAnimation = AnimationUtils.loadAnimation(getActivity(),
@@ -177,17 +178,27 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
         Matcher m = p.matcher(getEmailId);
 
         // Check for both field is empty or not
-        if (getEmailId.equals("") || getEmailId.length() == 0
-                || getPassword.equals("") || getPassword.length() == 0) {
+        if (getEmailId.equals("") || getEmailId.length() == 0) {
             loginLayout.startAnimation(shakeAnimation);
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Enter both credentials.");
+            emailid.setError("Please Enter Email Id");
+
+           // new CustomToast().Show_Toast(getActivity(), view,
+           //         "Enter both credentials.");
+        }
+        else if(getPassword.equals("") || getPassword.length() == 0){
+            loginLayout.startAnimation(shakeAnimation);
+
+            password.setError("Password too short");
 
         }
         // Check if email id is valid or not
-        else if (!m.find())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Your Email Id is Invalid.");
+        else if (!m.find()){
+            emailid.setError("Your Email Id is Invalid");
+        }
+
+
+            //new CustomToast().Show_Toast(getActivity(), view,
+            //        "Your Email Id is Invalid.");
             // Else do login and do your stuff
         else
             Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT)

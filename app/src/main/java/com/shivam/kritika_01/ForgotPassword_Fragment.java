@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,7 +77,8 @@ public class ForgotPassword_Fragment extends Fragment implements View.OnClickLis
             case R.id.backToLoginBtn:
 
                 // Replace Login Fragment on Back Presses
-                new MainActivity().replaceLoginFragment();
+                //new MainActivity().replaceLoginFragment();
+                ((RegisterActivity) Objects.requireNonNull(getActivity())).replaceLoginFragment();
                 break;
 
             case R.id.forgot_button:
@@ -99,15 +101,24 @@ public class ForgotPassword_Fragment extends Fragment implements View.OnClickLis
         Matcher m = p.matcher(getEmailId);
 
         // First check if email id is not null else show error toast
-        if (getEmailId.equals("") || getEmailId.length() == 0)
+        if (getEmailId.equals("") || getEmailId.length() == 0){
 
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Please enter your Email Id.");
+            emailId.setError("Please enter your Email Id");
+        }
+
+            //new CustomToast().Show_Toast(getActivity(), view,
+            //        "Please enter your Email Id.");
+
 
             // Check if email id is valid or not
-        else if (!m.find())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Your Email Id is Invalid.");
+        else if (!m.find()){
+
+            emailId.setError("Your Email Id is Invalid.");
+        }
+
+
+            //new CustomToast().Show_Toast(getActivity(), view,
+            //        "Your Email Id is Invalid.");
 
             // Else submit email id and fetch passwod or do your stuff
         else
