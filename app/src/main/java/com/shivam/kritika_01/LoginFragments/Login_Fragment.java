@@ -1,15 +1,18 @@
-package com.shivam.kritika_01;
+package com.shivam.kritika_01.LoginFragments;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +21,28 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.shivam.kritika_01.MainActivity;
+import com.shivam.kritika_01.R;
+import com.shivam.kritika_01.UtilsClasses.Utils;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Login_Fragment extends Fragment implements View.OnClickListener {
+
+    FirebaseAuth mAuth;
 
     private View view;
 
@@ -104,6 +117,8 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 
     private void initViews() {
 
+        mAuth=FirebaseAuth.getInstance();
+
         fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
 
         emailid = view.findViewById(R.id.login_emailid);
@@ -140,7 +155,8 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.loginBtn:
-                checkValidation();
+                SignInUser();
+                //checkValidation();
                 break;
 
             case R.id.forgot_password:
@@ -166,6 +182,86 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private boolean validatePassword() {
+
+        String password1 = password.getText().toString().trim();
+
+        if (password1.isEmpty()) {
+            password.setError("Password is required. Can't be empty.");
+            return false;
+        } else if (password.length() < 6) {
+            password.setError("Password short. Minimum 6 characters required.");
+            return false;
+        } else {
+            password.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateEmailAddress() {
+
+        String email = emailid.getText().toString().trim();
+
+        if (email.isEmpty()) {
+            emailid.setError("Email is required. Can't be empty.");
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailid.setError("Invalid Email. Enter valid email address.");
+            return false;
+        } else {
+            emailid.setError(null);
+            return true;
+        }
+    }
+
+
+
+    private void SignInUser(){
+
+
+        if (!validateEmailAddress() | !validatePassword()) {
+            // Email or Password not valid,
+            return;
+        }
+        //Email and Password valid, sign in user here
+
+        String email = emailid.getText().toString().trim();
+        String password1 = password.getText().toString().trim();
+        //showProgressBar();
+
+        mAuth.signInWithEmailAndPassword(email, password1)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (task.isSuccessful()) {
+                            // hideProgressBar();
+                            Toast.makeText(getActivity(), "User logged in", Toast.LENGTH_SHORT).show();
+                            Intent intent =new Intent(getActivity(), MainActivity.class);
+                            startActivity(intent);
+//                            updateUI();
+                        } else {
+                            //hideProgressBar();
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                Toast.makeText(getActivity(), "Invalid Password", Toast.LENGTH_SHORT).show();
+                                password.setError("Invalid Password");
+                                //mOutputText.setText("Invalid Password");
+                            } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                                Toast.makeText(getActivity(), "Email not is use", Toast.LENGTH_SHORT).show();
+                                emailid.setError("Email not in use");
+                                //mOutputText.setText("Email not in use");
+                            }
+
+                        }
+                    }
+                });
+    }
+
+
+
+
+
+
     // Check Validation before login
     private void checkValidation() {
         // Get email id and password
@@ -182,8 +278,8 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
             loginLayout.startAnimation(shakeAnimation);
             emailid.setError("Please Enter Email Id");
 
-           // new CustomToast().Show_Toast(getActivity(), view,
-           //         "Enter both credentials.");
+            // new CustomToast().Show_Toast(getActivity(), view,
+            //         "Enter both credentials.");
         }
         else if(getPassword.equals("") || getPassword.length() == 0){
             loginLayout.startAnimation(shakeAnimation);
@@ -197,9 +293,9 @@ public class Login_Fragment extends Fragment implements View.OnClickListener {
         }
 
 
-            //new CustomToast().Show_Toast(getActivity(), view,
-            //        "Your Email Id is Invalid.");
-            // Else do login and do your stuff
+        //new CustomToast().Show_Toast(getActivity(), view,
+        //        "Your Email Id is Invalid.");
+        // Else do login and do your stuff
         else
             Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT)
                     .show();

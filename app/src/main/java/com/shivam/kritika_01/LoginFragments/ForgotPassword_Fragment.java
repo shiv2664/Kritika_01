@@ -1,4 +1,4 @@
-package com.shivam.kritika_01;
+package com.shivam.kritika_01.LoginFragments;
 
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.shivam.kritika_01.R;
+import com.shivam.kritika_01.RegisterActivity;
+import com.shivam.kritika_01.UtilsClasses.Utils;
 
 import java.util.Objects;
 import java.util.regex.Matcher;

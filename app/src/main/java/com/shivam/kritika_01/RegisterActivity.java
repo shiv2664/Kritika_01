@@ -27,6 +27,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.shivam.kritika_01.LoginFragments.Login_Fragment;
+import com.shivam.kritika_01.UtilsClasses.Utils;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -73,8 +75,8 @@ public class RegisterActivity extends AppCompatActivity {
         GoogleSignInOptions googleSignInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
-//                        .requestProfile()
-                          .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestProfile()
+                        .requestIdToken(getString(R.string.default_web_client_id))
                         .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
@@ -123,7 +125,10 @@ public class RegisterActivity extends AppCompatActivity {
             mBtnSignOut.setVisibility(View.VISIBLE);
             //mOutputText.setText(firebaseUser.getDisplayName() + "\n" +
                     firebaseUser.getEmail();
-            mBtnGoogleSignIn.setVisibility(View.GONE);
+                    mBtnGoogleSignIn.setVisibility(View.GONE);
+
+                    Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
+                    startActivity(intent);
         }else{
             mBtnSignOut.setVisibility(View.GONE);
             //mOutputText.setText("User is not logged in");
